@@ -116,7 +116,14 @@ class MainIHM(QWidget):
 
         if msg.arbitration_id == 0x08:  # MPU9250 reply
             self.mpu_widget.update_from_can(msg)
-
+        
+        elif msg.arbitration_id == 0x09:
+            if len(msg.data) >= 1:
+                rpm = msg.data[0]
+                self.anemo_widget.update_wind_speed(rpm)
+                print(f"🌬️ Windmill speed updated: {rpm} RPM")
+            else:
+                print("⚠️ Invalid data for wind speed frame")
     # ---------------------------------------------------------------
     # Cleanup
     # ---------------------------------------------------------------
